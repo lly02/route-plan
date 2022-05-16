@@ -4,12 +4,16 @@ def initialize():
     db_name = 'bus.db'
     main_url = 'https://www.transitlink.com.sg/eservice/eguide/service_idx.php'
 
-    # Check DB exists
-    if(not model.check_db_exists(db_name)):
-        # Scrape data from URL
-        site_data = model.get_all_bus_number(main_url)
+    bus = model.bus(db_name)
 
-        model.create_db(db_name)   
+    # Check DB exists
+    if(not bus.check_db_exists()):
+        # Scrape data from URL
+        site_data = bus.get_all_bus_number(main_url)
+
+        # Table initialization
+        bus.create_db()
+        bus.insert_data(site_data)
 
 def main():
     initialize()
